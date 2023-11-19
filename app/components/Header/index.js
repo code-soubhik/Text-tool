@@ -1,16 +1,17 @@
 import React from 'react';
 
 import Nav from './NavBar';
-import Logo from './Logo'
+import Logo from './Logo';
 import Navlink from './Navlink';
 import Container from './Container';
-
 
 function Header() {
   return (
     <>
       <Nav>
-        <Logo><Navlink to={"/"}>Crazy Text Tool</Navlink></Logo>
+        <Logo>
+          <Navlink to="/">Text Tool</Navlink>
+        </Logo>
       </Nav>
     </>
   );
