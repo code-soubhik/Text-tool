@@ -11,7 +11,7 @@ type DataSchema = {
   updatedAt: string;
 }
 
-export function HomePage({
+export default function Page({
   searchParams
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -39,7 +39,7 @@ export function HomePage({
       if (textBoxValue?.current)
         textBoxValue.current.value = text.data;
     }
-  }, [])
+  })
 
   const handleChange = (val: string) => {
     if (val === "") {
@@ -47,15 +47,15 @@ export function HomePage({
     } else {
       setText(val);
     }
-    let words = val.split(" ").filter(el => el !== "");
-    let readingTime = (words.length / 200).toFixed(2);
+    const words = val.split(" ").filter(el => el !== "");
+    const readingTime = (words.length / 200).toFixed(2);
     setWordCount(words.length);
     setTimeTaken(readingTime);
   };
 
   const handleUppercase = () => {
     if (textBoxValue?.current?.value && textBoxValue.current.value !== "") {
-      let newData = text.toUpperCase();
+      const newData = text.toUpperCase();
       textBoxValue.current.value = newData;
       setText(newData);
     } else {
@@ -65,7 +65,7 @@ export function HomePage({
 
   const handleLowercase = () => {
     if (textBoxValue?.current?.value && textBoxValue.current.value !== "") {
-      let newData = text.toLowerCase();
+      const newData = text.toLowerCase();
       textBoxValue.current.value = newData;
       setText(newData);
     } else {
@@ -89,7 +89,7 @@ export function HomePage({
 
   const handleExtraSpace = () => {
     if (textBoxValue?.current?.value && textBoxValue.current.value !== "") {
-      let newText = text.split(" ").filter(el => el !== "").join(" ");
+      const newText = text.split(" ").filter(el => el !== "").join(" ");
       textBoxValue.current.value = newText;
       setText(newText);
     } else {
@@ -110,7 +110,7 @@ export function HomePage({
       if (!textBoxValue?.current?.value || textBoxValue.current.value === "")
         return toast("Input is empty!");
       const storedData = window.localStorage.getItem("data");
-      let data: DataSchema[] = storedData ? JSON.parse(storedData) : [];
+      const data: DataSchema[] = storedData ? JSON.parse(storedData) : [];
 
       const dataExists = (text: string) => data.some(item => item.data === text);
 
@@ -144,6 +144,7 @@ export function HomePage({
       toast("Text saved successfully!");
     } catch (error) {
       toast("Failed to save text!");
+      console.error(error);
     }
     finally {
       window.localStorage.removeItem("editId");
@@ -188,5 +189,3 @@ export function HomePage({
     </div>
   );
 }
-
-export default HomePage;

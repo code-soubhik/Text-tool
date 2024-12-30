@@ -25,12 +25,14 @@ const SavedPage = () => {
   const handleDelete = (id: number) => {
     const filteredData = savedData.filter((item) => item.id !== id);
     setSavedData(filteredData);
-    (typeof window !== 'undefined') && window.localStorage.setItem("data", JSON.stringify(filteredData));
+    if (typeof window !== 'undefined')
+      window.localStorage.setItem("data", JSON.stringify(filteredData));
     toast("Item deleted successfully!");
   };
 
   const handleEdit = (id: number) => {
-    (typeof window !== 'undefined') && window.localStorage.setItem("editId", id.toString());
+    if (typeof window !== 'undefined')
+      window.localStorage.setItem("editId", id.toString());
     router.push(`/?edit=true`);
   };
 
