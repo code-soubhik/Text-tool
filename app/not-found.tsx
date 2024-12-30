@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import Link from "next/link";
 
 const NotFoundPage = () => {
   return (
@@ -9,7 +9,7 @@ const NotFoundPage = () => {
         <p className="notfound-description">
           Oops! The page you're looking for doesn't exist. It might have been moved or deleted.
         </p>
-        <Link to={'/'} className="notfound-button">
+        <Link href={'/'} className="notfound-button">
           Go Back Home
         </Link>
       </div>

@@ -1,5 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// app/(containers)/page.tsx
+"use client"
+import { useRouter } from 'next/navigation';
+import { useState, useRef, useEffect, use } from 'react';
 import { toast } from 'react-toastify';
 
 type DataSchema = {
@@ -9,21 +11,29 @@ type DataSchema = {
   updatedAt: string;
 }
 
-export function HomePage() {
+export function HomePage({
+  searchParams
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+
+  const query = use(searchParams);
+  const isEditParamsExists = query && typeof query.edit === 'string' && query.edit === "true";
+
   const [text, setText] = useState<string>('Nothing to preview..');
   const [wordCount, setWordCount] = useState(0);
   const [timeTaken, setTimeTaken] = useState<string>("0");
   const [textID, setTextID] = useState<string | null>(null);
   const textBoxValue = useRef<HTMLTextAreaElement>(null);
-  const query = new URLSearchParams(window.location.search);
-  const navigate = useNavigate();
+
+  const router = useRouter()
 
   useEffect(() => {
-    if (query.has("edit") && query.get("edit") === "true") {
-      const editId = localStorage.getItem("editId");
-      if (!editId) navigate("/");
+    if (isEditParamsExists) {
+      const editId = window.localStorage.getItem("editId");
+      if (!editId) router.push("/");
       setTextID(editId)
-      const textData = localStorage.getItem("data");
+      const textData = window.localStorage.getItem("data");
       const text = textData ? JSON.parse(textData).filter((item: DataSchema) => item.id === Number(editId))[0] : null;
       handleChange(text.data)
       if (textBoxValue?.current)
@@ -99,7 +109,7 @@ export function HomePage() {
     try {
       if (!textBoxValue?.current?.value || textBoxValue.current.value === "")
         return toast("Input is empty!");
-      const storedData = localStorage.getItem("data");
+      const storedData = window.localStorage.getItem("data");
       let data: DataSchema[] = storedData ? JSON.parse(storedData) : [];
 
       const dataExists = (text: string) => data.some(item => item.data === text);
@@ -127,16 +137,16 @@ export function HomePage() {
         };
         data.push(schema);
       }
-      localStorage.setItem("data", JSON.stringify(data));
+      window.localStorage.setItem("data", JSON.stringify(data));
       handleClearing();
-      if (query.has("edit"))
-        navigate("/");
+      if (isEditParamsExists)
+        router.push("/");
       toast("Text saved successfully!");
     } catch (error) {
       toast("Failed to save text!");
     }
     finally {
-      localStorage.removeItem("editId");
+      window.localStorage.removeItem("editId");
     }
   };
 
@@ -145,8 +155,8 @@ export function HomePage() {
       <div className="main">
         <div className="section">
           <div className="data-input">
-            <h1 className='heading1'>{query.has("edit") ? "Edited text to analyze below" : "Enter the text to analyze below"}</h1>
-            {query.has("edit") && <span className='edit-note'>Note: Editing the text will not update the saved text.</span>}
+            <h1 className='heading1'>{isEditParamsExists ? "Edited text to analyze below" : "Enter the text to analyze below"}</h1>
+            {isEditParamsExists && <span className='edit-note'>Note: Editing the text will not update the saved text.</span>}
             <textarea
               ref={textBoxValue}
               className="text-box"
@@ -172,7 +182,7 @@ export function HomePage() {
         </div>
         <div className="preview">
           <h3 className='preview-heading'>Preview</h3>
-          <div className="data">{text}</div>
+          <pre className="data">{text}</pre>
         </div>
       </div>
     </div>

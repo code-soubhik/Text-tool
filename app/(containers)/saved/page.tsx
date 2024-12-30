@@ -1,7 +1,8 @@
+"use client"
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Card from "../components/Card"; // Assuming Card component is in this path
+import { useRouter } from "next/navigation";
+import Card from "@/app/components/Card";
 
 type DataSchema = {
   id: number;
@@ -14,23 +15,23 @@ const SavedPage = () => {
   const [savedData, setSavedData] = useState<DataSchema[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("newest");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
-    const data = localStorage.getItem("data");
+    const data = (typeof window !== 'undefined') && window.localStorage.getItem("data");
     setSavedData(data ? JSON.parse(data) : []);
   }, []);
 
   const handleDelete = (id: number) => {
     const filteredData = savedData.filter((item) => item.id !== id);
     setSavedData(filteredData);
-    localStorage.setItem("data", JSON.stringify(filteredData));
+    (typeof window !== 'undefined') && window.localStorage.setItem("data", JSON.stringify(filteredData));
     toast("Item deleted successfully!");
   };
 
   const handleEdit = (id: number) => {
-    localStorage.setItem("editId", id.toString());
-    navigate(`/?edit=true`);
+    (typeof window !== 'undefined') && window.localStorage.setItem("editId", id.toString());
+    router.push(`/?edit=true`);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
