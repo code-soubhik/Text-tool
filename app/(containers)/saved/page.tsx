@@ -36,6 +36,19 @@ const SavedPage = () => {
     router.push(`/?edit=true`);
   };
 
+  const handleCopy = (id: number) => {
+    const copyData = savedData.find((item) => item.id === id);
+    if (copyData?.data) {
+      navigator.clipboard.writeText(copyData?.data)
+        .then(() => {
+          toast("Text copied.");
+        })
+        .catch(() => {
+          toast("Failed to copy text.");
+        });
+    }
+  };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -100,6 +113,7 @@ const SavedPage = () => {
                 updatedAt={item.updatedAt}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onCopy={handleCopy}
               />
             ))
           ) : (

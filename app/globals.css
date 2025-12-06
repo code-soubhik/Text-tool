@@ -30,6 +30,10 @@ label {
   /* line-height: 1.5em; */
 }
 
+button {
+  cursor: pointer;
+}
+
 .nav {
   box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.2);
   height: 8vh;
@@ -305,7 +309,7 @@ footer {
     display: block !important;
   }
 
-  .delete-btn {
+  .card-btn {
     display: flex !important;
   }
 
@@ -387,8 +391,8 @@ footer {
 
 /* Card Styling */
 .saved-card {
-  padding: 20px;
-  border-radius: 15px;
+  padding: 10px 0 0 10px;
+  border-radius: 5px;
   background: linear-gradient(145deg, #fff, #e7ceff);
   display: flex;
   flex-direction: column;
@@ -399,18 +403,24 @@ footer {
   border: 1px solid #ddd;
   width: 100%;
   max-width: 320px;
+  max-height: 500px;
   position: relative;
 }
 
 .saved-card:hover {
-  transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(145deg, #e7ceff, #fff);
   border-color: #dab4ff;
 }
 
 .saved-card-content {
   flex: 1;
-  margin-bottom: 15px;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  max-height: 450px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(73, 0, 73, 0.49) #f1f1f100;
 }
 
 .saved-card-data {
@@ -420,26 +430,20 @@ footer {
   line-height: 1.6;
   margin-bottom: 15px;
   text-align: justify;
+  padding: 0 10px 10px 0;
 }
 
-.saved-card-actions {
-  width: 100%;
+.saved-card-footer-data {
   display: flex;
-  justify-content: end;
-  align-items: end;
-  margin-top: 15px;
-}
-
-.saved-card-footer {
-  margin-top: 10px;
-  align-self: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 10px 10px 0;
   font-size: 14px;
   color: #777;
-  width: 100%;
-  text-align: right;
 }
 
-.saved-card-footer .saved-last-modified {
+.saved-last-modified {
   font-size: 14px;
   color: #555;
   font-style: italic;
@@ -469,7 +473,7 @@ footer {
   color: #000000;
 }
 
-.delete-btn {
+.card-btn {
   display: none;
   position: absolute;
   right: 10px;
@@ -486,13 +490,17 @@ footer {
   transition: display 0.2s ease-in-out;
 }
 
-.saved-card:hover .delete-btn {
+.delete-btn {
+  left: 10px;
+}
+
+.saved-card:hover .card-btn {
   display: flex;
 }
 
 .saved-edit:hover {
-  background: #000000;
-  color: white;
+  background: #a141ff;
+  color: #ffffff;
 }
 
 /* Icon Styling */
@@ -521,22 +529,11 @@ footer {
 /* Responsive Design */
 @media (max-width: 768px) {
   .saved-card {
-    padding: 15px;
     flex-direction: column;
-  }
-
-  .saved-card-actions {
-    width: 100%;
-    margin-top: 10px;
   }
 
   .saved-btn {
     width: 48%;
     font-size: 18px;
-  }
-
-  .saved-card-footer {
-    font-size: 12px;
-    text-align: right;
   }
 }
